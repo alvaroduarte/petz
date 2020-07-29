@@ -19,9 +19,7 @@ public class ClienteDto {
     	this.nome = cliente.getNome();
     	this.cpf = cliente.getCpf();
     	this.celular = cliente.getCelular();
-    	//this.pets = cliente.getPets();
     	this.pets = cliente.getPets().stream().map(PetDto::new).collect(toList());
-    	
     }
     
 	public Long getId() {

@@ -1,7 +1,7 @@
 package petz.com.br.controller.request;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -60,12 +60,17 @@ public class ClienteRequest {
 		this.pets = pets;
 	}
 	public Cliente converter() {
+		
 		var cliente = new Cliente(nome, cpf, celular);
-		var petsConverter = new ArrayList<Pet>();
+		
+		cliente.setPets(pets.stream().map(p -> new Pet(p.getNome(), p.getRaca(), cliente)).collect(Collectors.toList()));
+		
+		/*var petsConverter = new ArrayList<Pet>();
 		pets.forEach(p -> {
 			petsConverter.add(new Pet(p.getNome(), p.getRaca(), cliente));
 		});
-		cliente.setPets(petsConverter);
+		cliente.setPets(petsConverter);*/
+		
 		return cliente;
 	}
 	@Override
