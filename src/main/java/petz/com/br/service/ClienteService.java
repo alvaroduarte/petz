@@ -2,6 +2,7 @@ package petz.com.br.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -83,15 +84,9 @@ public class ClienteService {
 			cliente.setNome(clienteRequest.getNome());
 			cliente.setCelular(clienteRequest.getCelular());
 			cliente.setCpf(clienteRequest.getCpf());
-			clienteRequest.getPets().forEach(p -> {
-				
-				final var pet = new Pet(p.getId(), p.getNome(), p.getRaca(), cliente);
-				final var indexPet = cliente.getPets().indexOf(pet);
-				if(indexPet > -1) {
-					cliente.getPets().set(indexPet, pet);
-				}
-				
-			});
+			
+	        final var pets = clienteRequest.getPets().stream().map(p -> new Pet(p.getId(), p.getNome(), p.getRaca(), cliente) ).collect(Collectors.toList());
+	        cliente.setPets(pets);
 			
 			final var retorno = clienteRepository.save(cliente);
 			
