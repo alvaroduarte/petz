@@ -65,12 +65,6 @@ public class ClienteRequest {
 		
 		cliente.setPets(pets.stream().map(p -> new Pet(p.getNome(), p.getRaca(), cliente)).collect(Collectors.toList()));
 		
-		/*var petsConverter = new ArrayList<Pet>();
-		pets.forEach(p -> {
-			petsConverter.add(new Pet(p.getNome(), p.getRaca(), cliente));
-		});
-		cliente.setPets(petsConverter);*/
-		
 		return cliente;
 	}
 	@Override
