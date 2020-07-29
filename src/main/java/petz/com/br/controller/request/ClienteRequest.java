@@ -25,8 +25,6 @@ public class ClienteRequest {
 	@Length(max = 11)
 	private String cpf;
 	
-	@Length(min = 13)
-	@Length(max = 13)
 	private String celular;
     
 	private List<PetRequest> pets;
