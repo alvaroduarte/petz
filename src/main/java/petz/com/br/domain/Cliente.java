@@ -19,22 +19,22 @@ public class Cliente {
 	private Long id;
 	private String nome;
 	@Column(unique=true, nullable=false) 
-	private String cpf;
-	private String celular;
+	private Long cpf;
+	private Long celular;
 	
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> pets;
 	
 	public Cliente() {}
 	
-	public Cliente(String nome, String cpf, String celular) {
+	public Cliente(String nome, Long cpf, Long celular) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.celular = celular;
 	}
 	
-	public Cliente(String nome, String cpf, String celular, List<Pet> pets) {
+	public Cliente(String nome, Long cpf, Long celular, List<Pet> pets) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.celular = celular;
@@ -59,16 +59,16 @@ public class Cliente {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
-	public void setCpf(String cpf) {
+	public void setCpf(Long cpf) {
 		this.cpf = cpf;
 	}
-	public String getCelular() {
+	public Long getCelular() {
 		return celular;
 	}
-	public void setCelular(String celular) {
+	public void setCelular(Long celular) {
 		this.celular = celular;
 	}
 

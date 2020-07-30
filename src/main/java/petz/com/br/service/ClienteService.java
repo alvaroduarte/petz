@@ -33,7 +33,7 @@ public class ClienteService {
 		
 	}
 	
-	public Cliente buscarPorCpf(String cpf) {
+	public Cliente buscarPorCpf(Long cpf) {
 		
 		logger.info("buscarPorCpf {}", cpf);
 		

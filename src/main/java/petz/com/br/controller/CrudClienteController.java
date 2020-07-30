@@ -43,14 +43,31 @@ public class CrudClienteController {
 		if(ofNullable(cpf).isEmpty()) {
 
 			logger.info("Buscando todos os clientes");
+			
+			var clientes = clienteService.buscarTodos();
+			
+			if(clientes.isEmpty()) {
+				
+				return new ResponseEntity<> (HttpStatus.NOT_FOUND);
+			
+			}
 
-			return new ResponseEntity<>(ClienteDto.converter(clienteService.buscarTodos()), HttpStatus.OK);
+			return new ResponseEntity<>(ClienteDto.converter(clientes), HttpStatus.OK);
 
 		} else {
 
 			logger.info("Buscando pelo cpf {}", cpf);
+			
+			var cliente = clienteService.buscarPorCpf(Long.valueOf(cpf));
 
-			return new ResponseEntity<>(ClienteDto.converter(Arrays.asList(clienteService.buscarPorCpf(cpf)))  , HttpStatus.OK);
+			if(ofNullable(cliente).isEmpty()) {
+				
+				return new ResponseEntity<> (HttpStatus.NOT_FOUND);
+			
+			}
+			
+			return new ResponseEntity<>(ClienteDto.converter(Arrays.asList( cliente ))  , HttpStatus.OK);
+		
 		}
 
 	}
@@ -91,7 +108,7 @@ public class CrudClienteController {
 
 		if(ofNullable(cliente).isPresent()) {
 
-			return new ResponseEntity<>( new ClienteDto( clienteService.atualizar(id, clienteRequest)) , HttpStatus.OK);
+			return new ResponseEntity<>( new ClienteDto( cliente ) , HttpStatus.OK);
 
 		}
 

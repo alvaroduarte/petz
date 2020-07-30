@@ -10,8 +10,8 @@ public class ClienteDto {
 	
 	private Long id;
 	private String nome;
-	private String cpf;
-	private String celular;
+	private Long cpf;
+	private Long celular;
     private List<PetDto> pets;
     
     public ClienteDto(Cliente cliente) {
@@ -30,11 +30,11 @@ public class ClienteDto {
 		return nome;
 	}
 	
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
 	
-	public String getCelular() {
+	public Long getCelular() {
 		return celular;
 	}
 	

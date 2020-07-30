@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
 import petz.com.br.domain.Cliente;
 import petz.com.br.domain.Pet;
 
@@ -20,13 +18,12 @@ public class ClienteRequest {
 	private String nome;
 	
 	@NotNull
-	@NotEmpty
-	@Length(min = 11)
-	@Length(max = 11)
-	private String cpf;
+	private Long cpf;
 	
-	private String celular;
+	private Long celular;
     
+	@NotNull
+	@NotEmpty
 	private List<PetRequest> pets;
     
 	public Long getId() {
@@ -41,16 +38,16 @@ public class ClienteRequest {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
-	public void setCpf(String cpf) {
+	public void setCpf(Long cpf) {
 		this.cpf = cpf;
 	}
-	public String getCelular() {
+	public Long getCelular() {
 		return celular;
 	}
-	public void setCelular(String celular) {
+	public void setCelular(Long celular) {
 		this.celular = celular;
 	}
 	public List<PetRequest> getPets() {
