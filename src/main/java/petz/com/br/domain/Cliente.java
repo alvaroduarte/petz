@@ -23,7 +23,7 @@ public class Cliente {
 	private Long celular;
 	
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+            cascade = CascadeType.ALL)
     private List<Pet> pets;
 	
 	public Cliente() {}
