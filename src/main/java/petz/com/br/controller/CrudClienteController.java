@@ -44,7 +44,7 @@ public class CrudClienteController {
 
 			logger.debug("Buscando todos os clientes");
 			
-			var clientes = clienteService.buscarTodos();
+			final var clientes = clienteService.buscarTodos();
 			
 			if(clientes.isEmpty()) {
 				
