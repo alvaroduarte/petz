@@ -60,7 +60,7 @@ public class CrudClienteController {
 
 			logger.info("Buscando pelo cpf {}", cpf);
 			
-			var cliente = clienteService.buscarPorCpf(Long.valueOf(cpf));
+			final var cliente = clienteService.buscarPorCpf(Long.valueOf(cpf));
 
 			if(ofNullable(cliente).isEmpty()) {
 				
@@ -81,7 +81,7 @@ public class CrudClienteController {
 
 		logger.info("buscarPorId {}", id);
 		
-		var cliente = clienteService.buscarPorId(id);
+		final var cliente = clienteService.buscarPorId(id);
 		
 		if(ofNullable(cliente).isPresent()) {
 			

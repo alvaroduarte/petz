@@ -48,7 +48,7 @@ public class ClienteService {
 		
 		if(clienteOptional.isPresent()) {
 		
-			var cliente = clienteOptional.get();
+			final var cliente = clienteOptional.get();
 			
 			logger.debug("{} encontrado com sucesso!", cliente);
 			
@@ -66,7 +66,7 @@ public class ClienteService {
 		
 		logger.info("salvar {}", cliente);
 		
-		var retorno = clienteRepository.save(cliente);
+		final var retorno = clienteRepository.save(cliente);
 		
 		logger.debug("{} Salvo com sucesso!", cliente);
 		
