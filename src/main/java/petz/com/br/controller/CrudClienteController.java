@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import petz.com.br.controller.dto.ClienteDto;
+import petz.com.br.controller.dto.converter.ClienteConverterClienteDto;
+import petz.com.br.controller.dto.converter.ClientesConverterClientesDto;
 import petz.com.br.controller.request.ClienteRequest;
+import petz.com.br.controller.request.converter.ClienteRequestConverterCliente;
 import petz.com.br.service.ClienteService;
 
 @RestController
@@ -33,7 +36,15 @@ public class CrudClienteController {
 
 	@Autowired
 	private ClienteService clienteService;
-
+	
+	@Autowired
+	private ClientesConverterClientesDto clientesConverterClientesDto; 
+	
+	@Autowired
+	private ClienteRequestConverterCliente clienteRequestConverterCliente;
+	
+	@Autowired
+	private ClienteConverterClienteDto clienteConverterClienteDto;
 
 	@GetMapping
 	public ResponseEntity<List<ClienteDto>> buscar(String cpf) {	
@@ -54,7 +65,7 @@ public class CrudClienteController {
 			
 			}
 
-			return new ResponseEntity<>(ClienteDto.converter(clientes), HttpStatus.OK);
+			return new ResponseEntity<>(clientesConverterClientesDto.convert( clientes ), HttpStatus.OK);
 
 		} else {
 
@@ -70,7 +81,7 @@ public class CrudClienteController {
 			
 			}
 			
-			return new ResponseEntity<>(ClienteDto.converter(Arrays.asList( cliente ))  , HttpStatus.OK);
+			return new ResponseEntity<>(clientesConverterClientesDto.convert( Arrays.asList( cliente ) ), HttpStatus.OK);
 		
 		}
 
@@ -87,7 +98,7 @@ public class CrudClienteController {
 			
 			logger.debug("{} id {} econtrado com sucesso", cliente, id);
 			
-			return new ResponseEntity<>( new ClienteDto( cliente ) , HttpStatus.OK);
+			return new ResponseEntity<>( clienteConverterClienteDto.convert( cliente ) , HttpStatus.OK);
 			
 		}
 		
@@ -101,31 +112,35 @@ public class CrudClienteController {
 
 		logger.info("salvar {}", clienteRequest);
 
-		var cliente = clienteService.salvar(clienteRequest.converter());
-
+		var cliente = clienteService.salvar(clienteRequestConverterCliente.convert(clienteRequest));
+		
 		logger.debug("{} salvo com sucesso!", cliente);
 		
-		return new ResponseEntity<>(new ClienteDto(cliente), HttpStatus.CREATED);
-
+		return new ResponseEntity<>(clienteConverterClienteDto.convert( cliente ), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ClienteDto> atualizar(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {	
 
 		logger.info("atualizar id {}, {}", id, clienteRequest);
-
-		var cliente = clienteService.atualizar(id, clienteRequest);
-
-		if(ofNullable(cliente).isPresent()) {
+		
+		clienteRequest.setId(id);
+		
+		var cliente = clienteRequestConverterCliente.convert(clienteRequest);
+		
+		if(ofNullable(cliente).isPresent()){
+			
+			clienteService.salvar(cliente);
 			
 			logger.debug("{} atualizado com sucesso!", cliente);
 
-			return new ResponseEntity<>( new ClienteDto( cliente ) , HttpStatus.OK);
-
+			return new ResponseEntity<>( clienteConverterClienteDto.convert( cliente ) , HttpStatus.OK);
+			
 		}
-
+	
+		logger.debug("Cliente id {} não encontrado na base de dados!", id);
+		
 		return new ResponseEntity<> (HttpStatus.NOT_FOUND);
-
 	}
 
 	@DeleteMapping("/{id}")

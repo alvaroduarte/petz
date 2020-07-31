@@ -41,8 +41,4 @@ public class ClienteDto {
 	public List<PetDto> getPets() {
 		return pets;
 	}
-	
-	public static List<ClienteDto> converter(List<Cliente> clientes){
-		return clientes.stream().map(ClienteDto::new).collect(toList());
-	}
 }

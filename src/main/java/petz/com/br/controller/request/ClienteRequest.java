@@ -1,13 +1,9 @@
 package petz.com.br.controller.request;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import petz.com.br.domain.Cliente;
-import petz.com.br.domain.Pet;
 
 public class ClienteRequest {
 	
@@ -56,14 +52,7 @@ public class ClienteRequest {
 	public void setPets(List<PetRequest> pets) {
 		this.pets = pets;
 	}
-	public Cliente converter() {
-		
-		var cliente = new Cliente(nome, cpf, celular);
-		
-		cliente.setPets(pets.stream().map(p -> new Pet(p.getNome(), p.getRaca(), cliente)).collect(Collectors.toList()));
-		
-		return cliente;
-	}
+
 	@Override
 	public String toString() {
 		return "ClienteRequest [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", celular=" + celular + ", pets="

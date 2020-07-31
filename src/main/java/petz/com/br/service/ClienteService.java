@@ -2,7 +2,6 @@ package petz.com.br.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import petz.com.br.controller.CrudClienteController;
-import petz.com.br.controller.request.ClienteRequest;
 import petz.com.br.domain.Cliente;
-import petz.com.br.domain.Pet;
 import petz.com.br.repository.ClienteRepository;
 
 @Service
@@ -72,41 +69,6 @@ public class ClienteService {
 		
 		return retorno;
 		
-	}
-	
-	@Transactional
-	public Cliente atualizar(Long id, ClienteRequest clienteRequest) {
-		
-		logger.info("atualizar id {}, {}", id, clienteRequest);
-		
-		final Optional<Cliente> clienteOptional = clienteRepository.findById(id);
-		
-		if(clienteOptional.isPresent()) {
-			
-			logger.debug("atualizando o cliente id {}", id);
-			
-			final var cliente = clienteOptional.get();
-			
-			cliente.setNome(clienteRequest.getNome());
-			cliente.setCelular(clienteRequest.getCelular());
-			cliente.setCpf(clienteRequest.getCpf());
-			
-	        final var pets = clienteRequest.getPets().stream().map(p -> new Pet(p.getId(), p.getNome(), p.getRaca(), cliente)).collect(Collectors.toList());
-	         
-	        cliente.getPets().clear();
-	        cliente.getPets().addAll(pets);
-	      
-			final var retorno = clienteRepository.save(cliente);
-			
-			logger.debug("{} atualizado com sucesso!", retorno);
-			
-			return retorno;
-			
-		}
-		
-		logger.debug("Cliente id {} não encontrado na base de dados", id);
-		
-		return null;
 	}
 	
 	@Transactional
