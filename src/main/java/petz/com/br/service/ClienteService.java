@@ -85,9 +85,11 @@ public class ClienteService {
 			cliente.setCelular(clienteRequest.getCelular());
 			cliente.setCpf(clienteRequest.getCpf());
 			
-	        final var pets = clienteRequest.getPets().stream().map(p -> new Pet(p.getId(), p.getNome(), p.getRaca(), cliente) ).collect(Collectors.toList());
-	        cliente.setPets(pets);
-			
+	        final var pets = clienteRequest.getPets().stream().map(p -> new Pet(p.getId(), p.getNome(), p.getRaca(), cliente)).collect(Collectors.toList());
+	         
+	        cliente.getPets().clear();
+	        cliente.getPets().addAll(pets);
+	      
 			final var retorno = clienteRepository.save(cliente);
 			
 			logger.info("{} atualizado com sucesso!", retorno);

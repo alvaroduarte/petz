@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 public class Cliente {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
 	@Column(unique=true, nullable=false) 
@@ -23,7 +23,7 @@ public class Cliente {
 	private Long celular;
 	
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> pets;
 	
 	public Cliente() {}
