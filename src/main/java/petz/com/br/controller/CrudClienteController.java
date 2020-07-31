@@ -42,11 +42,13 @@ public class CrudClienteController {
 
 		if(ofNullable(cpf).isEmpty()) {
 
-			logger.info("Buscando todos os clientes");
+			logger.debug("Buscando todos os clientes");
 			
 			var clientes = clienteService.buscarTodos();
 			
 			if(clientes.isEmpty()) {
+				
+				logger.debug("Não existe cliente cadastrado na base de dados");
 				
 				return new ResponseEntity<> (HttpStatus.NOT_FOUND);
 			
@@ -62,6 +64,8 @@ public class CrudClienteController {
 
 			if(ofNullable(cliente).isEmpty()) {
 				
+				logger.debug("Não existe cliente cadastrado na base de dados com o cpf {}", cpf);
+				
 				return new ResponseEntity<> (HttpStatus.NOT_FOUND);
 			
 			}
@@ -75,15 +79,19 @@ public class CrudClienteController {
 	@GetMapping("/{id}")
 	public ResponseEntity <ClienteDto> buscarPorId(@PathVariable Long id) {	
 
-		logger.info("buscarPorId{}", id);
+		logger.info("buscarPorId {}", id);
 		
 		var cliente = clienteService.buscarPorId(id);
 		
 		if(ofNullable(cliente).isPresent()) {
 			
+			logger.debug("{} id {} econtrado com sucesso", cliente, id);
+			
 			return new ResponseEntity<>( new ClienteDto( cliente ) , HttpStatus.OK);
 			
 		}
+		
+		logger.debug("Cliente id {} não econtrado na base de dados", id);
 
 		return new ResponseEntity<> (HttpStatus.NOT_FOUND);
 	}
@@ -95,6 +103,8 @@ public class CrudClienteController {
 
 		var cliente = clienteService.salvar(clienteRequest.converter());
 
+		logger.debug("{} salvo com sucesso!", cliente);
+		
 		return new ResponseEntity<>(new ClienteDto(cliente), HttpStatus.CREATED);
 
 	}
@@ -107,6 +117,8 @@ public class CrudClienteController {
 		var cliente = clienteService.atualizar(id, clienteRequest);
 
 		if(ofNullable(cliente).isPresent()) {
+			
+			logger.debug("{} atualizado com sucesso!", cliente);
 
 			return new ResponseEntity<>( new ClienteDto( cliente ) , HttpStatus.OK);
 
@@ -122,8 +134,14 @@ public class CrudClienteController {
 		logger.info("remover id {}", id);
 
 		if(clienteService.remover(id)) {
+			
+			logger.info("Cliente id {} removido com sucesso!", id);
+			
 			return new ResponseEntity<>(HttpStatus.OK);
+		
 		}
+		
+		logger.debug("Cliente id {} não econtrado na base de dados!", id);
 
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

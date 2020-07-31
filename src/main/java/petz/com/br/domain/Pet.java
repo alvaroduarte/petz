@@ -86,12 +86,31 @@ public class Pet {
 		if (getClass() != obj.getClass())
 			return false;
 		Pet other = (Pet) obj;
+		if (cliente == null) {
+			if (other.cliente != null)
+				return false;
+		} else if (!cliente.equals(other.cliente))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (raca == null) {
+			if (other.raca != null)
+				return false;
+		} else if (!raca.equals(other.raca))
+			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Pet [id=" + id + ", nome=" + nome + ", raca=" + raca + ", cliente=" + cliente + "]";
 	}
 }

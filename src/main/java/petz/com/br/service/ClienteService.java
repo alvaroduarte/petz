@@ -38,7 +38,6 @@ public class ClienteService {
 		logger.info("buscarPorCpf {}", cpf);
 		
 		return clienteRepository.findByCpf(cpf);
-		
 	}
 	
 	public Cliente buscarPorId(Long id) {
@@ -49,12 +48,17 @@ public class ClienteService {
 		
 		if(clienteOptional.isPresent()) {
 		
-			return clienteOptional.get();
+			var cliente = clienteOptional.get();
+			
+			logger.debug("{} encontrado com sucesso!", cliente);
+			
+			return cliente;
 			
 		}
+		
+		logger.debug("Cliente id {} não encontrado na base de dados!", id);
 
 		return null;
-		
 	}
 	
 	@Transactional
@@ -63,6 +67,8 @@ public class ClienteService {
 		logger.info("salvar {}", cliente);
 		
 		var retorno = clienteRepository.save(cliente);
+		
+		logger.debug("{} Salvo com sucesso!", cliente);
 		
 		return retorno;
 		
@@ -77,7 +83,7 @@ public class ClienteService {
 		
 		if(clienteOptional.isPresent()) {
 			
-			logger.info("atualizando o cliente id {}", id);
+			logger.debug("atualizando o cliente id {}", id);
 			
 			final var cliente = clienteOptional.get();
 			
@@ -92,13 +98,13 @@ public class ClienteService {
 	      
 			final var retorno = clienteRepository.save(cliente);
 			
-			logger.info("{} atualizado com sucesso!", retorno);
+			logger.debug("{} atualizado com sucesso!", retorno);
 			
 			return retorno;
 			
 		}
 		
-		logger.info("Cliente id {} não encontrado na base de dados", id);
+		logger.debug("Cliente id {} não encontrado na base de dados", id);
 		
 		return null;
 	}
@@ -112,14 +118,16 @@ public class ClienteService {
 		
 		if(clienteOptional.isPresent()) {
 			
-			logger.info("removendo o cliente id {}", id);
+			logger.debug("removendo o cliente id {}", id);
 			
 			clienteRepository.deleteById(id);
 			
-			logger.info("cliente id {} removido com sucesso", id);
+			logger.debug("cliente id {} removido com sucesso", id);
 			
 			return Boolean.TRUE;
 		}
+		
+		logger.debug("cliente id {} removido com sucesso", id);
 		
 		return Boolean.FALSE;
 	}
